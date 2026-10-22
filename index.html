@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <title>Who is the Imposter?</title>
+  <meta name="description" content="A pass-and-play party word game. Everyone gets the secret word except the imposter.">
+  <meta name="theme-color" content="#14161c" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f5f3ee" media="(prefers-color-scheme: light)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon-180.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="app">
+
+    <!-- Setup -->
+    <section class="screen" id="screen-setup" data-active>
+      <header class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 64 64"><circle cx="32" cy="26" r="14"/><path d="M10 58c2-12 11-18 22-18s20 6 22 18"/><circle class="eye" cx="27" cy="25" r="2.6"/><circle class="eye" cx="37" cy="25" r="2.6"/></svg>
+        </div>
+        <h1>Who is the<br><span>Imposter?</span></h1>
+        <p class="sub">Pass the phone. Everyone gets the secret word, except one.</p>
+      </header>
+
+      <div class="card setup-card">
+        <label class="label" for="count">How many players?</label>
+        <div class="stepper">
+          <button type="button" class="step" id="minus" aria-label="Fewer players">&minus;</button>
+          <input id="count" type="number" inputmode="numeric" min="3" max="30" value="4" aria-live="polite">
+          <button type="button" class="step" id="plus" aria-label="More players">+</button>
+        </div>
+        <p class="hint-text">3 to 30 players &middot; 1 imposter</p>
+      </div>
+
+      <button class="btn primary big" id="start" type="button" disabled>Loading words&hellip;</button>
+
+      <details class="rules">
+        <summary>How to play</summary>
+        <ol>
+          <li>Each player holds the card to see their secret word, then passes the phone on.</li>
+          <li>One random player is the <b>imposter</b>. They only get a vague hint.</li>
+          <li>Take turns saying one word that relates to the secret word.</li>
+          <li>Discuss and vote on who you think the imposter is.</li>
+          <li>If the imposter survives the vote or guesses the word, they win.</li>
+        </ol>
+      </details>
+    </section>
+
+    <!-- Reveal (one per player) -->
+    <section class="screen" id="screen-reveal">
+      <div class="topbar">
+        <button class="icon-btn" id="quit" type="button" aria-label="Quit to menu">
+          <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+        </button>
+        <div class="progress" aria-hidden="true"><div class="bar" id="bar"></div></div>
+        <span class="counter" id="counter">1/4</span>
+      </div>
+
+      <div class="pass">
+        <p class="eyebrow">Pass the phone to</p>
+        <h2 id="player-name">Player 1</h2>
+      </div>
+
+      <div class="holder" id="holder" role="button" tabindex="0" aria-label="Press and hold to reveal your word">
+        <div class="hidden-face">
+          <svg class="finger" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6a14 14 0 0 1 14 14v6M10 26v-6A14 14 0 0 1 16 8.5"/><path d="M17 42c2-4 3-9 3-16a4 4 0 0 1 8 0c0 5-.5 9.5-2 14"/><path d="M12 37c1.5-3 2-7 2-11a10 10 0 0 1 20 0c0 7-1 12-3 16"/></svg>
+          <p class="hold-label">Hold to reveal</p>
+          <p class="hold-sub">Make sure nobody else is looking</p>
+        </div>
+        <div class="shown-face" id="shown" aria-live="assertive"></div>
+      </div>
+
+      <button class="btn primary big" id="next" type="button" disabled>Hold the card first</button>
+    </section>
+
+    <!-- Game start -->
+    <section class="screen" id="screen-start">
+      <div class="start-wrap">
+        <p class="eyebrow">Everyone is ready</p>
+        <h2 class="starter-title">Starting player</h2>
+        <div class="starter" id="starter">Player 1</div>
+        <p class="sub">Go around in order. Each player says one word linked to the secret word. Then vote!</p>
+      </div>
+
+      <div class="reveal-box" id="answer-box">
+        <button class="btn ghost" id="show-answer" type="button">Reveal the imposter</button>
+        <div class="answer" id="answer" hidden>
+          <div><span class="k">Imposter</span><span class="v imp" id="ans-imp"></span></div>
+          <div><span class="k">Secret word</span><span class="v" id="ans-word"></span></div>
+          <div><span class="k">Imposter's hint</span><span class="v muted" id="ans-hint"></span></div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary big" id="again" type="button">Play again</button>
+        <button class="btn ghost" id="menu" type="button">Change players</button>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js" defer></script>
+</body>
+</html>
